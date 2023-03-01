@@ -6,6 +6,7 @@ import sys
 from opentelemetry import trace
 from opentelemetry.exporter.jaeger.thrift import JaegerExporter
 from opentelemetry.instrumentation.django import DjangoInstrumentor
+from opentelemetry.instrumentation.psycopg2 import Psycopg2Instrumentor
 from opentelemetry.sdk.resources import SERVICE_NAME, Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
@@ -15,7 +16,8 @@ def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_api.settings")
 
-    DjangoInstrumentor().instrument()
+    DjangoInstrumentor().instrument(is_sql_commentor_enabled=True)
+    Psycopg2Instrumentor().instrument(is_sql_commentor_enabled=True)
 
     resource = Resource.create({SERVICE_NAME: "django-api"})
     trace.set_tracer_provider(TracerProvider(resource=resource))
