@@ -1,12 +1,10 @@
-from core.serializers import AddCounterSerializer
+from core.models import Counter
+from core.serializers import AddCounterSerializer, CounterSerializer
+from django.shortcuts import get_object_or_404
+from opentelemetry import trace
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
-from opentelemetry import trace
-
-from core.models import Counter
-from core.serializers import CounterSerializer, AddCounterSerializer
 
 tracer = trace.get_tracer(__name__)
 
@@ -22,7 +20,7 @@ class CounterViewSet(viewsets.ViewSet):
         add_counter_serializer = AddCounterSerializer(data=request.data)
         add_counter_serializer.is_valid(raise_exception=True)
 
-        [counter, created] = Counter.objects.get_or_create(id=pk)
+        counter = get_object_or_404(Counter, pk=pk)
 
         counter.value += add_counter_serializer.data["value"]
         counter.save()
