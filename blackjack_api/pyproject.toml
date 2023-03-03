@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "django-api"
+name = "blackjack-api"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Alberto Sobrinho <alberto.sobrinho@instruct.com.br>", "Lucas Alves <lucas.alves@instruct.com.br>"]
 readme = "README.md"
-packages = [{include = "django_api"}]
+packages = [{include = "blackjack_api"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -13,9 +13,11 @@ dj-database-url = "^1.2.0"
 django = "^4.1.7"
 opentelemetry-sdk = "^1.16.0"
 opentelemetry-instrumentation-django = "^0.37b0"
-opentelemetry-exporter-jaeger = "^1.16.0"
 opentelemetry-instrumentation-psycopg2 = "^0.37b0"
 psycopg2 = "^2.9.5"
+requests = "^2.28.2"
+opentelemetry-exporter-otlp = "^1.16.0"
+opentelemetry-instrumentation-requests = "^0.37b0"
 
 
 [build-system]

@@ -1,9 +1,9 @@
 # Instruct X-DevOps - Jaeger & OpenTelemetry
-This project demonstrates the the key aspects of Jaeger and OpenTelemetry, both monitoring tools for applications. It was created for Instruct's 2023 Summit X-DevOps presentation.
+This laboratory demonstrates the key aspects of Jaeger and OpenTelemetry, both monitoring tools for applications. It was created for Instruct's 2023 Summit X-DevOps presentation.
 
-## How to prepare the demo environment (Linux or WSL environment)
+## How to prepare the lab environment (Linux or WSL environment)
 
-1. Copy the content of `django-api/.env.sample` to a new file `django-api/.env`.
+1. Copy the content of `calculator-api/.env.sample` to a new file `calculator-api/.env`, and the content of `blackjack-api/.env.sample` to a new file `blackjack-api/.env`.
 
 2. Start the docker containers
 
@@ -15,38 +15,25 @@ This project demonstrates the the key aspects of Jaeger and OpenTelemetry, both 
     
     - Jaeger all-in-one service. The UI is at http://localhost:16686/.
     - PostgreSQL database.
-    - Django API service at http://localhost:8001/api/.
+    - Blackjack API service at http://localhost:8001/api/blackjack/.
+    - Calculator API service at http://localhost:8002/api/calculator/.
 
-## How to run the demo (Linux or WSL environment)
+## How to run the lab (Linux or WSL environment)
 
-1. Go to the [Jaeger UI](http://localhost:16686/) and search for traces on the `django-api` service. The will already be traces related to the start of the service.
+1. Go to the [Jaeger UI](http://localhost:16686/) and search for traces on the `blackjack-api` service. The will already be traces related to the start of the service.
 
-2. Make a get request to fetch a counter by an id on the Django API:
-
-    ```bash
-    $ curl -X GET http://localhost:8001/api/counter/<id>/
-    ```
-
-    Replace `<id>` with an integer of your choice. This will create a new counter with the id specified.
-
-3. Go back to the Jaeger UI and search again for traces on the `django-api` service. Locate the most recent trace with the address `api/counter/(?P<pk>[^/.]+)/$` and explore it.
-
-4. Now add a value to the counter just created:
+2. Make a get request to start a game of blackjack:
 
     ```bash
-    $ curl -X PUT -F 'value=<value>' http://localhost:8001/api/counter/<id>/
+    $ curl http://localhost:8001/api/blackjack/deal
     ```
 
-    Replace `<value>` with an integer of your choice, and `<id>` with the same one used in the previous step. This will add the specified value to the counter just created.
+3. Go back to the Jaeger UI, search again for traces on the `blackjack-api` service, and click on the most recent trace with the address `api/blackjack/deal/$`.
 
-5. Go back to the Jaeger UI and search again for traces on the `django-api` service. Locate the most recent trace with the address `api/counter/(?P<pk>[^/.]+)/$` and explore it.
+4. On the tab `Service & Operation`, select the `blackjack-api api/blackjack/deal/$` span and open it's `Tags` tab. Look for the `operation.*` tags. Those were set on code to provide more context on the request.
 
-6. Now try to add a value to a counter not yet created:
+5. Open the `blackjack-api SELECT` and open it's `Tags` tab. Look for the `db.statement` tag. It should show the query made on the database.
 
-    ```bash
-    $ curl -X PUT -F 'value=<value>' http://localhost:8001/api/counter/<id>/
-    ```
+6. Look for the `calculator-api api/calculator/sum/$` span. It should have a different color, indicating it's from a diferent system. Open the span's `Tags` tab and look for the `operation.*` tags. They were also set on code, similarly as before.
 
-    Replace `<value>` with an integer of your choice, and `<id>` with an integer different than the used in the previous step. This will throw an error since the counter hasn't been created yet.
-
-7. Go back to the Jaeger UI and search again for traces on the `django-api` service. Locate the most recent trace with the address `api/counter/(?P<pk>[^/.]+)/$` and explore it.
+7. On the navigation menu on top of the screen, select the `System Architecture` option. You can see how the services relate to each other, as well as how many traces are between them. (It is easier to see on the `DAG` tab).

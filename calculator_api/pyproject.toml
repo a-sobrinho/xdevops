@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "calculator-api"
+version = "0.1.0"
+description = ""
+authors = ["Alberto Sobrinho <alberto.sobrinho@instruct.com.br>", "Lucas Alves <lucas.alves@instruct.com.br>"]
+readme = "README.md"
+packages = [{include = "calculator_api"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+djangorestframework = "^3.14.0"
+django = "^4.1.7"
+opentelemetry-sdk = "^1.16.0"
+opentelemetry-instrumentation-django = "^0.37b0"
+opentelemetry-exporter-otlp = "^1.16.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

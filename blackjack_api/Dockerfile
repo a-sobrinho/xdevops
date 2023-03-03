@@ -1,6 +1,6 @@
 FROM python:3.10
 
-ENV DJANGO_SETTINGS_MODULE django_api.settings
+ENV DJANGO_SETTINGS_MODULE blackjack_api.settings
 
 RUN pip install --upgrade pip && pip install poetry
 WORKDIR /code

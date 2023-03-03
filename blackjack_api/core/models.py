@@ -1,5 +1,5 @@
 from django.db import models
 
 
-class Counter(models.Model):
+class Blackjack(models.Model):
     value = models.IntegerField(default=0)
